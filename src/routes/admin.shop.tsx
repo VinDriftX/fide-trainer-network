@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import { Pencil, Trash2, Plus, Upload, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/admin/shop")({
   head: () => ({ meta: [{ title: "Chess Shop — Admin" }, { name: "robots", content: "noindex" }] }),
