@@ -7,6 +7,7 @@ import { trainerLevels, stats } from "@/lib/data";
 import hero from "@/assets/hero-chess.jpg";
 import mascot from "@/assets/chess-mascot.png";
 import { useEffect, useState } from "react";
+import { CareerAdvisor } from "@/components/career-advisor";
 
 export const Route = createFileRoute("/")({
   head: () => ({
