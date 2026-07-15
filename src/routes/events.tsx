@@ -1,13 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Calendar, MapPin, Clock, Users } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, Plus } from "lucide-react";
 import { getEvents, type Event } from "@/lib/data";
 import { EventEnrollmentForm } from "@/components/event-enrollment-form";
 import { SuccessCard } from "@/components/success-card";
+import { useAuth } from "@/lib/auth-context";
 import mascot from "@/assets/chess-mascot.png";
 
 export const Route = createFileRoute("/events")({
@@ -45,6 +46,7 @@ function EventCard({ event, onBook }: { event: Event; onBook: () => void }) {
 
 function EventsPage() {
   const { t } = useTranslation();
+  const { isAdmin } = useAuth();
   const events = getEvents(t);
   const [selected, setSelected] = useState<Event | null>(null);
   const [success, setSuccess] = useState<Event | null>(null);
@@ -55,9 +57,16 @@ function EventsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
-      <div className="mb-10">
-        <h1 className="font-display text-4xl font-bold sm:text-5xl">{t("events.title")}</h1>
-        <p className="mt-2 text-muted-foreground">{t("events.subtitle")}</p>
+      <div className="mb-10 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="font-display text-4xl font-bold sm:text-5xl">{t("events.title")}</h1>
+          <p className="mt-2 text-muted-foreground">{t("events.subtitle")}</p>
+        </div>
+        {isAdmin && (
+          <Button asChild variant="hero">
+            <Link to="/admin/events"><Plus className="mr-1 h-4 w-4" />Create Event</Link>
+          </Button>
+        )}
       </div>
 
       {Object.entries(grouped).map(([c, arr]) => (
