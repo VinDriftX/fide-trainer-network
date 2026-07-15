@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { LogIn, LogOut, UserCircle2, Moon, Sun, Crown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,8 +10,10 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/lib/auth-context";
 import { useTheme } from "@/lib/theme";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export function AppHeader() {
+  const { t } = useTranslation();
   const { user, profile, logout } = useAuth();
   const { theme, toggle } = useTheme();
   const displayName = profile?.full_name || user?.email || "";
@@ -21,10 +24,11 @@ export function AppHeader() {
       <SidebarTrigger />
       <Link to="/" className="flex min-w-0 items-center gap-2">
         <Crown className="h-5 w-5 shrink-0 text-primary" />
-        <span className="truncate font-display text-lg font-bold sm:text-xl">FIDE Trainer Network</span>
+        <span className="truncate font-display text-lg font-bold sm:text-xl">{t("brand.name")}</span>
       </Link>
-      <div className="ml-auto flex items-center gap-2">
-        <Button variant="ghost" size="icon" onClick={toggle} aria-label="Toggle theme">
+      <div className="ml-auto flex items-center gap-1 sm:gap-2">
+        <LanguageSwitcher />
+        <Button variant="ghost" size="icon" onClick={toggle} aria-label={t("nav.toggleTheme")}>
           {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
         {user ? (
@@ -44,23 +48,23 @@ export function AppHeader() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link to="/profile"><UserCircle2 className="mr-2 h-4 w-4" />My Profile</Link>
+                <Link to="/profile"><UserCircle2 className="mr-2 h-4 w-4" />{t("nav.myProfile")}</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/settings"><UserCircle2 className="mr-2 h-4 w-4" />Settings</Link>
+                <Link to="/settings"><UserCircle2 className="mr-2 h-4 w-4" />{t("nav.settings")}</Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
-                <LogOut className="mr-2 h-4 w-4" />Logout
+                <LogOut className="mr-2 h-4 w-4" />{t("nav.logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild>
-              <Link to="/auth"><LogIn className="mr-1 h-4 w-4" />Login</Link>
+              <Link to="/auth"><LogIn className="mr-1 h-4 w-4" />{t("nav.login")}</Link>
             </Button>
             <Button size="sm" asChild variant="gold">
-              <Link to="/register">Sign Up</Link>
+              <Link to="/register">{t("nav.signUp")}</Link>
             </Button>
           </div>
         )}

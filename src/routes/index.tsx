@@ -3,10 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Users, Calendar, Globe2, ArrowRight, Sparkles } from "lucide-react";
-import { trainerLevels, stats } from "@/lib/data";
+import { getTrainerLevels, getStats } from "@/lib/data";
 import hero from "@/assets/hero-chess.jpg";
 import mascot from "@/assets/chess-mascot.png";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CareerAdvisor } from "@/components/career-advisor";
 
 export const Route = createFileRoute("/")({
@@ -49,11 +50,13 @@ function StatCard({ icon: Icon, label, value }: { icon: React.ComponentType<{ cl
 }
 
 export default function Home() {
+  const { t } = useTranslation();
   const statIcons = [Trophy, Users, Calendar, Globe2];
+  const trainerLevels = getTrainerLevels(t);
+  const stats = getStats(t);
 
   return (
     <div>
-      {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img src={hero} alt="" className="h-full w-full object-cover opacity-40" />
@@ -62,14 +65,14 @@ export default function Home() {
         <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-20 sm:px-6 md:grid-cols-[1.4fr_1fr] md:py-32">
           <div className="text-primary-foreground">
             <Badge variant="secondary" className="mb-4 bg-gold text-gold-foreground hover:bg-gold/90">
-              <Sparkles className="mr-1 h-3 w-3" />Global Chess Community
+              <Sparkles className="mr-1 h-3 w-3" />{t("home.badge")}
             </Badge>
-            <h1 className="font-display text-5xl font-bold leading-tight sm:text-6xl md:text-7xl">FIDE Trainer Network</h1>
-            <p className="mt-6 max-w-2xl text-lg text-primary-foreground/90 sm:text-xl">Building Web-Based Networking Areas for FIDE Trainers</p>
+            <h1 className="font-display text-5xl font-bold leading-tight sm:text-6xl md:text-7xl">{t("brand.name")}</h1>
+            <p className="mt-6 max-w-2xl text-lg text-primary-foreground/90 sm:text-xl">{t("home.heroSubtitle")}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button size="lg" variant="gold" asChild><Link to="/register">Join Now <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
+              <Button size="lg" variant="gold" asChild><Link to="/register">{t("home.joinNow")} <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
               <Button size="lg" variant="outline" className="bg-white/10 text-primary-foreground border-primary-foreground/40 backdrop-blur hover:bg-white/20" asChild>
-                <Link to="/events">Upcoming Events</Link>
+                <Link to="/events">{t("home.upcomingEvents")}</Link>
               </Button>
             </div>
           </div>
@@ -79,11 +82,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trainer Levels */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="mb-12 text-center">
-          <h2 className="font-display text-3xl font-bold sm:text-4xl">Trainer Levels</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">Certification tracks from beginner instructor to FIDE Senior Trainer.</p>
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">{t("home.levelsTitle")}</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">{t("home.levelsSubtitle")}</p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {trainerLevels.map((lvl, i) => (
@@ -92,7 +94,7 @@ export default function Home() {
               <CardHeader>
                 <Badge className="w-fit bg-gold text-gold-foreground hover:bg-gold">{lvl.code}</Badge>
                 <CardTitle className="font-display text-xl">{lvl.name}</CardTitle>
-                <CardDescription className="font-medium text-primary">Rating: {lvl.rating}</CardDescription>
+                <CardDescription className="font-medium text-primary">{t("home.ratingLabel")} {lvl.rating}</CardDescription>
               </CardHeader>
               <CardContent><p className="text-sm text-muted-foreground">{lvl.description}</p></CardContent>
             </Card>
@@ -100,28 +102,25 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats */}
       <section className="chessboard-bg border-y bg-muted/30">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
           <div className="mb-10 text-center">
-            <h2 className="font-display text-3xl font-bold sm:text-4xl">Network at a Glance</h2>
+            <h2 className="font-display text-3xl font-bold sm:text-4xl">{t("home.statsTitle")}</h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((s, i) => <StatCard key={s.label} icon={statIcons[i]} label={s.label} value={s.value} />)}
+            {stats.map((s, i) => <StatCard key={s.key} icon={statIcons[i]} label={s.label} value={s.value} />)}
           </div>
         </div>
       </section>
 
-      {/* AI Career Advisor */}
       <CareerAdvisor />
 
-      {/* CTA */}
       <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 text-center">
-        <h2 className="font-display text-3xl font-bold sm:text-4xl">Ready to grow the game?</h2>
-        <p className="mx-auto mt-3 max-w-xl text-muted-foreground">Register today and join thousands of chess educators shaping the next generation.</p>
+        <h2 className="font-display text-3xl font-bold sm:text-4xl">{t("home.ctaTitle")}</h2>
+        <p className="mx-auto mt-3 max-w-xl text-muted-foreground">{t("home.ctaSubtitle")}</p>
         <div className="mt-6 flex justify-center gap-3">
-          <Button size="lg" variant="hero" asChild><Link to="/register">Get Started</Link></Button>
-          <Button size="lg" variant="outline" asChild><Link to="/trainers">Meet Trainers</Link></Button>
+          <Button size="lg" variant="hero" asChild><Link to="/register">{t("home.getStarted")}</Link></Button>
+          <Button size="lg" variant="outline" asChild><Link to="/trainers">{t("home.meetTrainers")}</Link></Button>
         </div>
       </section>
     </div>
