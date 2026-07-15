@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
+import { PaymentMethodPicker, paymentMethods } from "@/components/payment-method-picker";
 
-export const paymentMethods = ["MMQR", "PayPal", "Mobile Banking", "MPU"] as const;
+export { paymentMethods };
 
 export const registrantSchema = z.object({
   fideId: z.string().trim().min(3, "FIDE ID required").max(20),
