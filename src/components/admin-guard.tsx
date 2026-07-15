@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth-context";
-import { Loader2, Shield, LayoutDashboard, Calendar, Receipt, Users, Settings, LogOut } from "lucide-react";
+import { Loader2, Shield, LayoutDashboard, Calendar, Receipt, Users, Settings, LogOut, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const NAV: { to: string; label: string; icon: any; exact?: boolean }[] = [
@@ -9,6 +9,7 @@ const NAV: { to: string; label: string; icon: any; exact?: boolean }[] = [
   { to: "/admin/events", label: "Events", icon: Calendar },
   { to: "/admin/tax-support", label: "Tax Support", icon: Receipt },
   { to: "/admin/partners", label: "Partners", icon: Users },
+  { to: "/admin/shop", label: "Shop", icon: ShoppingBag },
   { to: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
