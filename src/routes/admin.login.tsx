@@ -1,13 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
-import { bootstrapConfiguredAdmin } from "@/lib/admin.functions";
 import { toast } from "sonner";
 import { Shield } from "lucide-react";
 
@@ -18,7 +16,6 @@ export const Route = createFileRoute("/admin/login")({
 
 function AdminLogin() {
   const navigate = useNavigate();
-  const bootstrapAdmin = useServerFn(bootstrapConfiguredAdmin);
   const { user, isAdmin, loading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,14 +29,6 @@ function AdminLogin() {
     e.preventDefault();
     setSubmitting(true);
     const normalizedEmail = email.trim().toLowerCase();
-    try {
-      await bootstrapAdmin();
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Admin account setup failed.");
-      setSubmitting(false);
-      return;
-    }
-
     const { data, error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
     if (error) { toast.error(error.message); setSubmitting(false); return; }
     // Verify admin role before continuing
