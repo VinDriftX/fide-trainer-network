@@ -2,49 +2,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-export const bootstrapConfiguredAdmin = createServerFn({ method: "POST" }).handler(async () => {
-  const email = process.env.ADMIN_BOOTSTRAP_EMAIL?.trim().toLowerCase();
-  const password = process.env.ADMIN_BOOTSTRAP_PASSWORD;
-
-  if (!email || !password) {
-    throw new Error("Admin account is not configured.");
-  }
-
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data: existingUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers({ perPage: 200 });
-  if (listError) throw new Error(listError.message);
-
-  let user = existingUsers.users.find((item) => item.email?.toLowerCase() === email) ?? null;
-
-  if (!user) {
-    const { data, error } = await supabaseAdmin.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-      user_metadata: { display_name: "FIDE Admin", full_name: "FIDE Admin" },
-    });
-    if (error) throw new Error(error.message);
-    user = data.user;
-  }
-
-  if (!user) throw new Error("Could not prepare the admin account.");
-
-  const { error: profileError } = await supabaseAdmin.from("profiles").upsert({
-    id: user.id,
-    email,
-    full_name: "FIDE Admin",
-    display_name: "FIDE Admin",
-  });
-  if (profileError) throw new Error(profileError.message);
-
-  const { error: roleError } = await supabaseAdmin
-    .from("user_roles")
-    .upsert({ user_id: user.id, role: "admin" as any }, { onConflict: "user_id,role" });
-  if (roleError) throw new Error(roleError.message);
-
-  return { ok: true, email };
-});
-
 // List all users with their roles + basic profile
 export const adminListUsers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
