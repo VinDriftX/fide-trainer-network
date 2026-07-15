@@ -49,9 +49,13 @@ function EventsAdmin() {
 
   const saveMut = useMutation({
     mutationFn: async (row: Partial<EventRow>) => {
+      if (!row.title) throw new Error("Title required");
       const payload = {
-        title: row.title, description: row.description, event_type: row.event_type,
-        location: row.location, country: row.country,
+        title: row.title,
+        description: row.description ?? null,
+        event_type: row.event_type ?? null,
+        location: row.location ?? null,
+        country: row.country ?? null,
         starts_at: row.starts_at ? new Date(row.starts_at).toISOString() : new Date().toISOString(),
         ends_at: row.ends_at ? new Date(row.ends_at).toISOString() : null,
         capacity: row.capacity ? Number(row.capacity) : null,

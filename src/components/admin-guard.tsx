@@ -4,13 +4,13 @@ import { useAuth } from "@/lib/auth-context";
 import { Loader2, Shield, LayoutDashboard, Calendar, Receipt, Users, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const NAV = [
+const NAV: { to: string; label: string; icon: any; exact?: boolean }[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/events", label: "Events", icon: Calendar },
   { to: "/admin/tax-support", label: "Tax Support", icon: Receipt },
   { to: "/admin/partners", label: "Partners", icon: Users },
   { to: "/admin/settings", label: "Settings", icon: Settings },
-] as const;
+];
 
 export function AdminGuard({ children }: { children: ReactNode }) {
   const { user, isAdmin, loading, logout } = useAuth();
@@ -42,7 +42,7 @@ export function AdminGuard({ children }: { children: ReactNode }) {
           {NAV.map((n) => {
             const active = n.exact ? pathname === n.to : pathname.startsWith(n.to);
             return (
-              <Link key={n.to} to={n.to} className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm ${active ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>
+              <Link key={n.to} to={n.to as any} className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm ${active ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}>
                 <n.icon className="h-4 w-4" />{n.label}
               </Link>
             );

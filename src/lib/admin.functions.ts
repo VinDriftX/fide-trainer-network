@@ -37,10 +37,10 @@ export const adminSetUserRole = createServerFn({ method: "POST" })
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     if (data.grant) {
-      const { error } = await supabaseAdmin.from("user_roles").insert({ user_id: data.userId, role: data.role });
+      const { error } = await supabaseAdmin.from("user_roles").insert({ user_id: data.userId, role: data.role as any });
       if (error && !error.message.includes("duplicate")) throw new Error(error.message);
     } else {
-      const { error } = await supabaseAdmin.from("user_roles").delete().eq("user_id", data.userId).eq("role", data.role);
+      const { error } = await supabaseAdmin.from("user_roles").delete().eq("user_id", data.userId).eq("role", data.role as any);
       if (error) throw new Error(error.message);
     }
     return { ok: true };
