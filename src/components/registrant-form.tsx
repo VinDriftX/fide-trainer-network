@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
+import { PaymentMethodPicker, paymentMethods } from "@/components/payment-method-picker";
 
-export const paymentMethods = ["MMQR", "PayPal", "Mobile Banking", "MPU"] as const;
+export { paymentMethods };
 
 export const registrantSchema = z.object({
   fideId: z.string().trim().min(3, "FIDE ID required").max(20),
@@ -45,6 +46,7 @@ export function RegistrantForm({
     defaultValues: { paymentMethod: "MMQR", paypalEmail: "", transactionId: "" },
   });
   const paymentMethod = form.watch("paymentMethod");
+  const [cardNumber, setCardNumber] = useState("");
 
   return (
     <form
@@ -75,31 +77,17 @@ export function RegistrantForm({
 
       {extraFields}
 
-      <div className="grid gap-2">
-        <Label>Payment Method</Label>
-        <RadioGroup
-          value={paymentMethod}
-          onValueChange={(v) => form.setValue("paymentMethod", v as typeof paymentMethods[number])}
-          className="grid grid-cols-2 gap-2 sm:grid-cols-4"
-        >
-          {paymentMethods.map((m) => (
-            <label key={m} className="flex cursor-pointer items-center gap-2 rounded-lg border bg-card p-3 text-sm transition hover:bg-accent has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-              <RadioGroupItem value={m} />{m}
-            </label>
-          ))}
-        </RadioGroup>
-      </div>
+      <PaymentMethodPicker
+        value={paymentMethod}
+        onChange={(m) => form.setValue("paymentMethod", m)}
+        paypalEmail={form.watch("paypalEmail") ?? ""}
+        onPaypalEmailChange={(v) => form.setValue("paypalEmail", v)}
+        transactionId={form.watch("transactionId") ?? ""}
+        onTransactionIdChange={(v) => form.setValue("transactionId", v)}
+        cardNumber={cardNumber}
+        onCardNumberChange={setCardNumber}
+      />
 
-      {paymentMethod === "PayPal" && (
-        <div className="grid gap-4 rounded-lg border bg-muted/30 p-4 sm:grid-cols-2">
-          <Field label="PayPal Email" error={form.formState.errors.paypalEmail?.message}>
-            <Input type="email" {...form.register("paypalEmail")} placeholder="you@example.com" />
-          </Field>
-          <Field label="Transaction ID" error={form.formState.errors.transactionId?.message}>
-            <Input {...form.register("transactionId")} placeholder="TXN..." />
-          </Field>
-        </div>
-      )}
 
       <div className="grid gap-1.5">
         <Label htmlFor="payment-screenshot">Upload Payment Screenshot</Label>
