@@ -7,6 +7,7 @@ import { trainerLevels, stats } from "@/lib/data";
 import hero from "@/assets/hero-chess.jpg";
 import mascot from "@/assets/chess-mascot.png";
 import { useEffect, useState } from "react";
+import { CareerAdvisor } from "@/components/career-advisor";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -110,6 +111,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* AI Career Advisor */}
+      <CareerAdvisor />
 
       {/* CTA */}
       <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 text-center">
