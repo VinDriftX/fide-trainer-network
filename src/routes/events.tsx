@@ -1,25 +1,69 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Calendar, MapPin, Clock, Users, Plus } from "lucide-react";
-import { getEvents, type Event } from "@/lib/data";
 import { EventEnrollmentForm } from "@/components/event-enrollment-form";
 import { SuccessCard } from "@/components/success-card";
 import { useAuth } from "@/lib/auth-context";
+import { supabase } from "@/integrations/supabase/client";
+import type { Event } from "@/lib/data";
 import mascot from "@/assets/chess-mascot.png";
 
 export const Route = createFileRoute("/events")({
   head: () => ({
     meta: [
       { title: "Events — FIDE Trainer Network" },
-      { name: "description", content: "Upcoming FIDE trainer seminars in Myanmar, United States, and India." },
+      { name: "description", content: "Upcoming FIDE trainer seminars and courses." },
     ],
   }),
   component: EventsPage,
 });
+
+type DbEvent = {
+  id: string;
+  title: string;
+  description: string | null;
+  event_type: string | null;
+  location: string | null;
+  country: string | null;
+  starts_at: string;
+  ends_at: string | null;
+  capacity: number | null;
+  price: number | null;
+  currency: string | null;
+  cover_url: string | null;
+  is_published: boolean | null;
+};
+
+const COUNTRY_FLAGS: Record<string, string> = {
+  Myanmar: "🇲🇲", "United States": "🇺🇸", USA: "🇺🇸", India: "🇮🇳",
+  China: "🇨🇳", Thailand: "🇹🇭", Singapore: "🇸🇬", Japan: "🇯🇵",
+};
+
+function toEvent(row: DbEvent): Event {
+  const d = new Date(row.starts_at);
+  const country = row.country || "Other";
+  return {
+    id: row.id,
+    country,
+    countryKey: country,
+    flag: COUNTRY_FLAGS[country] ?? "🌐",
+    name: row.title,
+    date: d.toLocaleDateString(),
+    time: d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    venue: row.location || "TBA",
+    trainers: [],
+    description: row.description || "",
+    examDate: row.ends_at ? new Date(row.ends_at).toLocaleDateString() : "TBA",
+    zoomLink: "",
+    meetingId: "",
+    passcode: "",
+  };
+}
 
 function EventCard({ event, onBook }: { event: Event; onBook: () => void }) {
   const { t } = useTranslation();
@@ -35,9 +79,13 @@ function EventCard({ event, onBook }: { event: Event; onBook: () => void }) {
         <div className="flex items-center gap-2 text-muted-foreground"><Calendar className="h-4 w-4 text-primary" />{t("events.seminar")} <span className="font-medium text-foreground">{event.date}</span></div>
         <div className="flex items-center gap-2 text-muted-foreground"><Clock className="h-4 w-4 text-primary" /><span className="font-medium text-foreground">{event.time}</span></div>
         <div className="flex items-center gap-2 text-muted-foreground"><MapPin className="h-4 w-4 text-primary" /><span className="font-medium text-foreground">{event.venue}</span></div>
-        <div className="flex items-start gap-2 text-muted-foreground"><Users className="mt-0.5 h-4 w-4 text-primary" /><span className="text-foreground">{event.trainers.join(", ")}</span></div>
-        <p className="text-muted-foreground">{event.description}</p>
-        <div className="rounded-md bg-gold/10 px-3 py-2 text-xs font-medium text-secondary">{t("events.examDate")} {event.examDate}</div>
+        {event.trainers.length > 0 && (
+          <div className="flex items-start gap-2 text-muted-foreground"><Users className="mt-0.5 h-4 w-4 text-primary" /><span className="text-foreground">{event.trainers.join(", ")}</span></div>
+        )}
+        {event.description && <p className="text-muted-foreground">{event.description}</p>}
+        {event.examDate !== "TBA" && (
+          <div className="rounded-md bg-gold/10 px-3 py-2 text-xs font-medium text-secondary">{t("events.examDate")} {event.examDate}</div>
+        )}
         <Button onClick={onBook} variant="hero" className="mt-2">{t("events.enrollButton")}</Button>
       </CardContent>
     </Card>
@@ -47,9 +95,21 @@ function EventCard({ event, onBook }: { event: Event; onBook: () => void }) {
 function EventsPage() {
   const { t } = useTranslation();
   const { isAdmin } = useAuth();
-  const events = getEvents(t);
   const [selected, setSelected] = useState<Event | null>(null);
   const [success, setSuccess] = useState<Event | null>(null);
+
+  const { data: events = [], isLoading } = useQuery({
+    queryKey: ["public-events"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .eq("is_published", true)
+        .order("starts_at", { ascending: true });
+      if (error) throw error;
+      return (data as DbEvent[]).map(toEvent);
+    },
+  });
 
   const grouped = events.reduce<Record<string, Event[]>>((acc, e) => {
     (acc[e.country] ??= []).push(e); return acc;
@@ -68,6 +128,11 @@ function EventsPage() {
           </Button>
         )}
       </div>
+
+      {isLoading && <p className="text-sm text-muted-foreground">Loading events…</p>}
+      {!isLoading && events.length === 0 && (
+        <p className="text-sm text-muted-foreground">No events available yet. Check back soon.</p>
+      )}
 
       {Object.entries(grouped).map(([c, arr]) => (
         <section key={c} className="mb-16">
@@ -102,8 +167,6 @@ function EventsPage() {
               rows={[
                 { label: t("events.eventLabel"), value: success.name },
                 { label: t("common.status"), value: t("events.pendingConfirmation") },
-                { label: t("events.zoomLink"), value: <a href={success.zoomLink} className="text-primary underline" target="_blank" rel="noreferrer">{success.zoomLink}</a> },
-                { label: t("events.meetingId"), value: success.meetingId },
               ]}
               footer={t("events.footerNote")}
             />
