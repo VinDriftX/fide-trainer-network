@@ -46,6 +46,7 @@ export function RegistrantForm({
     defaultValues: { paymentMethod: "MMQR", paypalEmail: "", transactionId: "" },
   });
   const paymentMethod = form.watch("paymentMethod");
+  const [cardNumber, setCardNumber] = useState("");
 
   return (
     <form
