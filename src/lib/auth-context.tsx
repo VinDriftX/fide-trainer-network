@@ -16,6 +16,7 @@ type AuthState = {
   user: User | null;
   session: Session | null;
   profile: Profile | null;
+  isAdmin: boolean;
   loading: boolean;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
