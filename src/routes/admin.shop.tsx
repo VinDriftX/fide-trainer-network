@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import { Pencil, Trash2, Plus, Upload, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/admin/shop")({
   head: () => ({ meta: [{ title: "Chess Shop — Admin" }, { name: "robots", content: "noindex" }] }),
@@ -31,6 +31,27 @@ const empty = (): Partial<Product> => ({
 function ShopAdmin() {
   const qc = useQueryClient();
   const [editing, setEditing] = useState<Partial<Product> | null>(null);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleUpload(file: File) {
+    if (!file) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `${crypto.randomUUID()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("product-images").upload(path, file, { cacheControl: "3600", upsert: false });
+      if (upErr) throw upErr;
+      const { data, error: signErr } = await supabase.storage.from("product-images").createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (signErr) throw signErr;
+      setEditing((e) => e ? { ...e, image_url: data.signedUrl } : e);
+      toast.success("Image uploaded");
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setUploading(false);
+    }
+  }
+
 
   const { data = [] } = useQuery({
     queryKey: ["admin-products"],
@@ -114,7 +135,27 @@ function ShopAdmin() {
                 <div><Label>Currency</Label><Input value={editing.currency ?? "USD"} onChange={(e) => setEditing({ ...editing, currency: e.target.value })} /></div>
                 <div><Label>Price</Label><Input type="number" step="0.01" required value={editing.price ?? 0} onChange={(e) => setEditing({ ...editing, price: Number(e.target.value) })} /></div>
                 <div><Label>Stock</Label><Input type="number" value={editing.stock ?? 0} onChange={(e) => setEditing({ ...editing, stock: Number(e.target.value) })} /></div>
-                <div className="col-span-2"><Label>Image URL</Label><Input value={editing.image_url ?? ""} onChange={(e) => setEditing({ ...editing, image_url: e.target.value })} /></div>
+                <div className="col-span-2">
+                  <Label>Image</Label>
+                  <div className="flex items-center gap-3">
+                    {editing.image_url ? (
+                      <img src={editing.image_url} alt="" className="h-20 w-20 rounded-md object-cover border" />
+                    ) : (
+                      <div className="grid h-20 w-20 place-items-center rounded-md border bg-muted text-2xl">♟</div>
+                    )}
+                    <div className="flex flex-col gap-2">
+                      <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm hover:bg-muted">
+                        {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                        {uploading ? "Uploading…" : editing.image_url ? "Replace image" : "Upload image"}
+                        <input type="file" accept="image/*" className="hidden" disabled={uploading}
+                          onChange={(e) => { const f = e.target.files?.[0]; if (f) handleUpload(f); e.target.value = ""; }} />
+                      </label>
+                      {editing.image_url && (
+                        <Button type="button" variant="ghost" size="sm" onClick={() => setEditing({ ...editing, image_url: "" })}>Remove</Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
                 <div className="col-span-2"><Label>Description</Label><Textarea rows={3} value={editing.description ?? ""} onChange={(e) => setEditing({ ...editing, description: e.target.value })} /></div>
                 <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!editing.is_active} onChange={(e) => setEditing({ ...editing, is_active: e.target.checked })} />Active</label>
               </div>
