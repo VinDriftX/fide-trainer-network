@@ -112,6 +112,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* AI Career Advisor */}
+      <CareerAdvisor />
+
       {/* CTA */}
       <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 text-center">
         <h2 className="font-display text-3xl font-bold sm:text-4xl">Ready to grow the game?</h2>
