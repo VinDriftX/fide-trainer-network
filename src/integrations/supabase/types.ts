@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      event_enrollments: {
+        Row: {
+          created_at: string
+          event_id: string
+          event_name: string
+          id: string
+          nrc: string
+          payment_method: string
+          rating_blitz: number | null
+          rating_bullet: number | null
+          rating_rapid: number | null
+          rating_standard: number | null
+          screenshot_url: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          event_name: string
+          id?: string
+          nrc: string
+          payment_method: string
+          rating_blitz?: number | null
+          rating_bullet?: number | null
+          rating_rapid?: number | null
+          rating_standard?: number | null
+          screenshot_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          event_name?: string
+          id?: string
+          nrc?: string
+          payment_method?: string
+          rating_blitz?: number | null
+          rating_bullet?: number | null
+          rating_rapid?: number | null
+          rating_standard?: number | null
+          screenshot_url?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       event_registrations: {
         Row: {
           created_at: string
@@ -213,6 +264,51 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_history: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string
+          currency: string
+          description: string
+          id: string
+          metadata: Json
+          payment_method: string
+          reference_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          category: string
+          created_at?: string
+          currency?: string
+          description: string
+          id?: string
+          metadata?: Json
+          payment_method: string
+          reference_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string
+          currency?: string
+          description?: string
+          id?: string
+          metadata?: Json
+          payment_method?: string
+          reference_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       posts: {
         Row: {
           author_id: string
@@ -290,12 +386,14 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
           avatar_url: string | null
           bio: string | null
           city: string | null
           country: string | null
           created_at: string
           display_name: string | null
+          email: string | null
           fide_id: string | null
           full_name: string | null
           id: string
@@ -307,12 +405,14 @@ export type Database = {
           website: string | null
         }
         Insert: {
+          address?: string | null
           avatar_url?: string | null
           bio?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
           display_name?: string | null
+          email?: string | null
           fide_id?: string | null
           full_name?: string | null
           id: string
@@ -324,12 +424,14 @@ export type Database = {
           website?: string | null
         }
         Update: {
+          address?: string | null
           avatar_url?: string | null
           bio?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
           display_name?: string | null
+          email?: string | null
           fide_id?: string | null
           full_name?: string | null
           id?: string
