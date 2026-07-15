@@ -1,0 +1,512 @@
+{
+  "brand": {
+    "name": "FIDE 培训师网络",
+    "short": "FIDE 培训师",
+    "tagline": "网络",
+    "seoTitle": "FIDE 培训师网络 - 全球国际象棋培训师社区",
+    "seoDescription": "加入由 FIDE 认证的国际象棋培训师、指导员和教育者组成的全球网络。获取研讨会、考试和职业发展机会。"
+  },
+  "language": {
+    "label": "语言",
+    "english": "英语 (English)",
+    "burmese": "缅甸语 (မြန်မာ)",
+    "chinese": "中文 (Chinese)"
+  },
+  "nav": {
+    "home": "首页",
+    "events": "活动",
+    "exams": "考试",
+    "taxSupport": "税务支持",
+    "trainers": "官方合作伙伴",
+    "shop": "商店",
+    "settings": "设置",
+    "navigation": "导航",
+    "myProfile": "我的个人资料",
+    "login": "登录",
+    "signUp": "注册",
+    "logout": "登出",
+    "toggleTheme": "切换主题"
+  },
+  "common": {
+    "loading": "加载中…",
+    "save": "保存",
+    "saveChanges": "保存更改",
+    "cancel": "取消",
+    "submit": "提交",
+    "reset": "重置",
+    "close": "关闭",
+    "confirm": "确认",
+    "yes": "是",
+    "no": "否",
+    "or": "或",
+    "required": "必填",
+    "goHome": "返回首页",
+    "tryAgain": "重试",
+    "somethingWrong": "出错了。",
+    "pageNotFound": "找不到页面",
+    "pageNotFoundDesc": "您正在寻找的页面不存在。",
+    "pageDidntLoad": "此页面未能加载",
+    "signInRequired": "需要登录",
+    "signInToProfile": "请登录以查看您的个人资料。",
+    "signInToSettings": "请登录以管理您的设置。",
+    "date": "日期",
+    "status": "状态",
+    "amount": "金额",
+    "reference": "参考号",
+    "method": "方式",
+    "description": "描述",
+    "category": "类别",
+    "total": "总计"
+  },
+  "home": {
+    "badge": "全球国际象棋社区",
+    "heroSubtitle": "为 FIDE 培训师建立基于网络的交流专区",
+    "joinNow": "立即加入",
+    "upcomingEvents": "即将举办的活动",
+    "levelsTitle": "培训师级别",
+    "levelsSubtitle": "从初级指导员到 FIDE 高级培训师的认证路径。",
+    "ratingLabel": "等级分:",
+    "statsTitle": "网络概览",
+    "ctaTitle": "准备好推动国际象棋发展了吗？",
+    "ctaSubtitle": "立即注册，加入成千上万塑造下一代的国际象棋教育者行列。",
+    "getStarted": "开始",
+    "meetTrainers": "认识培训师"
+  },
+  "stats": {
+    "trainers": "培训师",
+    "members": "注册成员",
+    "events": "活动",
+    "countries": "国家"
+  },
+  "levels": {
+    "DI": {
+      "name": "发展指导员",
+      "rating": "Up to 1200",
+      "description": "为国际象棋初学者提供支持。"
+    },
+    "NI": {
+      "name": "国家指导员",
+      "rating": "1201–1700",
+      "description": "全国认证指导员。"
+    },
+    "FI": {
+      "name": "FIDE 指导员",
+      "rating": "1701–1900",
+      "description": "官方国际指导员。"
+    },
+    "FT": {
+      "name": "FIDE 培训师",
+      "rating": "1901–2200",
+      "description": "由 FIDE 认证的专业培训师。"
+    },
+    "FST": {
+      "name": "FIDE 高级培训师",
+      "rating": "2201–2450",
+      "description": "最高 FIDE 培训师认证。"
+    }
+  },
+  "events": {
+    "title": "即将举办的活动",
+    "subtitle": "世界各地的 FIDE 培训师研讨会。请在下方登记您的意向。",
+    "seminar": "研讨会:",
+    "examDate": "考试日期:",
+    "enrollButton": "报名 / 登记意向",
+    "registerInterest": "登记意向",
+    "submitted": "✅ 报名已提交",
+    "eventLabel": "活动",
+    "pendingConfirmation": "待确认",
+    "zoomLink": "Zoom 链接",
+    "meetingId": "会议 ID",
+    "footerNote": "您可以在个人资料页面查看所有已报名的活动。",
+    "countries": {
+      "Myanmar": "缅甸",
+      "United States": "美国",
+      "India": "印度"
+    },
+    "list": {
+      "mm-01": {
+        "name": "FIDE Trainer Seminar — Yangon",
+        "venue": "Sedona Hotel, Yangon",
+        "description": "为期五天的密集研讨会，涵盖中局策略、残局技巧和针对有抱负的 FIDE 培训师的现代开局理论。"
+      },
+      "us-01": {
+        "name": "FIDE Trainer Seminar — New York",
+        "venue": "Marshall Chess Club, NYC",
+        "description": "与世界级教练面对面交流的研讨会，探讨现代备战、引擎辅助分析及教学技巧。"
+      },
+      "in-01": {
+        "name": "FIDE Trainer Seminar — Chennai",
+        "venue": "Tal Chess Academy, Chennai",
+        "description": "综合培训师认证课程，重点关注青少年发展和锦标赛备战。"
+      }
+    }
+  },
+  "exams": {
+    "title": "考试注册",
+    "subtitle": "注册 FIDE 培训师认证考试。",
+    "info": "FIDE 培训师认证考试评估您在国际象棋理论、教学法和比赛规则方面的知识。考试在每场研讨会结束后一周内进行。请填写下方表格并上传您的付款确认截图以保留您的座位。",
+    "registerButton": "注册",
+    "received": "✅ 考试注册已收到",
+    "regNo": "注册号",
+    "candidate": "考生",
+    "pendingPayment": "待确认付款",
+    "footerNote": "您将在 3 个工作日内收到一封包含考试日程安排详情的电子邮件。"
+  },
+  "taxSupport": {
+    "title": "税务支持与执照",
+    "subtitle": "在指导支持下申请或续签您的 FIDE 培训师执照。",
+    "cards": {
+      "filing": {
+        "title": "简化的申报",
+        "desc": "为所有认证级别提供及指导的 FIDE 培训师执照申请流程。"
+      },
+      "compliance": {
+        "title": "合规支持",
+        "desc": "确保您的培训师活动符合当地税务规定。"
+      },
+      "docs": {
+        "title": "文档模板",
+        "desc": "获取官方 FIDE 表格、收入声明和收据模板。"
+      },
+      "fees": {
+        "title": "费用建议",
+        "desc": "了解执照费用、续签成本及可申报扣除项。"
+      }
+    },
+    "formTitle": "执照申请",
+    "fideId": "FIDE ID",
+    "fullName": "全名",
+    "phone": "电话",
+    "nrc": "NRC / 护照",
+    "standardRating": "标准棋等级分",
+    "rapidRating": "快棋等级分",
+    "blitzRating": "超快棋等级分",
+    "serviceType": "服务类型",
+    "trainerLevel": "培训师级别",
+    "firstTime": "首次头衔申请",
+    "yearly": "年度付款",
+    "firstTimeFee": "首次头衔申请费",
+    "annualFee": "年度续签费",
+    "uploadScreenshot": "上传付款截图",
+    "submitApp": "提交申请",
+    "submitted": "✅ 申请已提交",
+    "appNo": "申请号",
+    "service": "服务",
+    "level": "级别",
+    "underReview": "审核中",
+    "footerNote": "我们的团队将在 5–7 个工作日内与您联系，处理您的执照事宜。",
+    "signInNote": "请登录以将此付款保存到您的历史记录中。"
+  },
+  "trainers": {
+    "title": "官方合作伙伴",
+    "subtitle": "与缅甸国际象棋协会 (Myanmar Chess Association) 合作",
+    "experience": "经验:",
+    "expertise": "专长:",
+    "languages": "语言:",
+    "contact": "联系",
+    "viewProfile": "查看个人资料",
+    "list": {
+      "t1": {
+        "name": "GM Wesley Chen",
+        "country": "美国",
+        "title": "FIDE 高级培训师",
+        "bio": "三次全国冠军，拥有 15 年的教练经验。《Modern Endgame Practice》作者。",
+        "experience": "15+ 年",
+        "expertise": [
+          "残局理论",
+          "局面棋",
+          "开局准备"
+        ],
+        "languages": [
+          "英语",
+          "普通话"
+        ]
+      },
+      "t2": {
+        "name": "IM Priya Sharma",
+        "country": "印度",
+        "title": "FIDE 培训师",
+        "bio": "国家女子队教练，专注于青少年发展和战术训练。",
+        "experience": "10+ 年",
+        "expertise": [
+          "战术",
+          "青少年教学",
+          "中局"
+        ],
+        "languages": [
+          "英语",
+          "印地语",
+          "泰米尔语"
+        ]
+      },
+      "t3": {
+        "name": "FM Aung Kyaw",
+        "country": "缅甸",
+        "title": "FIDE 指导员",
+        "bio": "东南亚锦标赛奖牌获得者。致力于在全缅地区推广普及国际象棋。",
+        "experience": "8+ 年",
+        "expertise": [
+          "基础知识",
+          "开局",
+          "快棋与超快棋"
+        ],
+        "languages": [
+          "英语",
+          "缅甸语"
+        ]
+      }
+    }
+  },
+  "shop": {
+    "title": "国际象棋商店",
+    "categoriesLabel": "类别",
+    "allProducts": "所有产品",
+    "buy": "购买",
+    "purchase": "购买",
+    "qtyLabel": "数量",
+    "totalLabel": "总计",
+    "confirmOrder": "确认订单",
+    "orderConfirmed": "✅ 订单确认成功",
+    "orderNumber": "订单号",
+    "product": "产品",
+    "quantity": "数量",
+    "totalPrice": "总价",
+    "paymentMethod": "付款方式",
+    "deliveryStatus": "发货状态",
+    "processing": "处理中",
+    "orderDate": "订单日期",
+    "orderFooter": "您的货物将在 5–7 个工作日内送达。非常感谢您的订购。",
+    "categories": {
+      "Chess Sets": "棋具套装",
+      "Chess Pieces": "棋子",
+      "Chess Boards": "棋盘",
+      "Chess Accessories": "国际象棋配件"
+    },
+    "products": {
+      "s1": {
+        "name": "木制套装",
+        "description": "手工紫檀木比赛套装。"
+      },
+      "s2": {
+        "name": "塑料套装",
+        "description": "适合俱乐部的耐用加重塑料套装。"
+      },
+      "s3": {
+        "name": "电子套装",
+        "description": "支持应用程序同步的高级电子感应棋盘套装。"
+      },
+      "s4": {
+        "name": "卷筒套装",
+        "description": "便携式便携乙烯基卷筒套装。"
+      },
+      "s5": {
+        "name": "皮革套装",
+        "description": "优雅的真皮套装，配有棋子。"
+      },
+      "p1": {
+        "name": "木制棋子",
+        "description": "斯汤顿 (Staunton) 加重紫檀木棋子。"
+      },
+      "p2": {
+        "name": "塑料棋子",
+        "description": "比赛标准塑料棋子。"
+      },
+      "p3": {
+        "name": "电子棋子",
+        "description": "适用于电子棋盘的智能 RFID 棋子。"
+      },
+      "p4": {
+        "name": "乙烯基棋子",
+        "description": "硅胶比赛棋子。"
+      },
+      "p5": {
+        "name": "皮革棋子",
+        "description": "柔软的皮制棋子。"
+      },
+      "b1": {
+        "name": "木制棋盘",
+        "description": "实木胡桃木与枫木比赛棋盘。"
+      },
+      "b2": {
+        "name": "塑料棋盘",
+        "description": "加重塑料比赛棋盘。"
+      },
+      "b3": {
+        "name": "电子棋盘",
+        "description": "智能感应比赛棋盘。"
+      },
+      "b4": {
+        "name": "卷筒棋盘",
+        "description": "便携式便携乙烯基卷筒棋盘。"
+      },
+      "b5": {
+        "name": "皮革棋盘",
+        "description": "高级皮革棋盘。"
+      },
+      "a1": {
+        "name": "棋子收纳盒",
+        "description": "高级木制棋子收纳盒。"
+      },
+      "a2": {
+        "name": "国际象棋包",
+        "description": "可装棋盘和棋子的高级旅行包。"
+      },
+      "a3": {
+        "name": "电子对局钟",
+        "description": "FIDE 认证电子对局钟。"
+      }
+    }
+  },
+  "auth": {
+    "welcomeBack": "欢迎回来",
+    "email": "电子邮件",
+    "password": "密码",
+    "signedIn": "已登录",
+    "continueGoogle": "继续使用 Google",
+    "newHere": "新用户？",
+    "createAccount": "创建账户",
+    "haveAccount": "已有账户？",
+    "invalidEmail": "无效的电子邮件",
+    "minChars": "至少 {{n}} 个字符",
+    "registerTitle": "创建账户",
+    "welcome": "欢迎！正在重定向到您的个人资料。",
+    "fideIdReq": "需要 FIDE ID",
+    "phoneReq": "电话号码",
+    "phoneMin": "需要提供电话",
+    "addressLabel": "地址",
+    "fullName": "全名",
+    "resetTitle": "设置新密码",
+    "newPassword": "新密码",
+    "updatePassword": "更新密码",
+    "passwordUpdated": "密码已更新"
+  },
+  "profile": {
+    "title": "我的个人资料",
+    "personalInfo": "个人信息",
+    "fullName": "全名",
+    "fideId": "FIDE ID",
+    "phone": "电话",
+    "address": "地址",
+    "saveChanges": "保存更改",
+    "saved": "个人资料已保存",
+    "myEvents": "我报名的活动",
+    "noEvents": "您尚未报名任何活动。",
+    "browseEvents": "浏览活动",
+    "enrolled": "已报名",
+    "paymentHistory": "付款历史记录",
+    "noPayments": "暂无付款。来自执照申请和活动报名的付款将显示在此处。",
+    "colDate": "日期",
+    "colCategory": "类别",
+    "colDescription": "描述",
+    "colMethod": "方式",
+    "colReference": "参考号",
+    "colAmount": "金额",
+    "colStatus": "状态"
+  },
+  "settings": {
+    "title": "设置",
+    "appearance": "外观",
+    "theme": "主题",
+    "themeDesc": "选择明亮或暗黑模式。",
+    "light": "明亮",
+    "dark": "暗黑",
+    "account": "账户",
+    "changePassword": "修改密码",
+    "passwordResetSent": "密码重置邮件已发送",
+    "notifications": "通知",
+    "emailNotif": "电子邮件通知",
+    "eventReminders": "活动提醒",
+    "languageCard": "界面语言",
+    "languageDesc": "选择您的偏好语言。将应用于整个应用程序。",
+    "saved": "已保存"
+  },
+  "payment": {
+    "method": "付款方式",
+    "mmqrTitle": "MMQR 付款",
+    "mmqrDesc": "使用支持 MMQR 的银行应用程序扫描二维码。",
+    "viewQR": "查看二维码",
+    "scanTitle": "扫描 MMQR 付款",
+    "scanDesc": "打开您的银行应用程序并扫描此二维码以完成付款。",
+    "paypalEmail": "PayPal 电子邮件",
+    "transactionId": "交易 ID",
+    "transferTo": "转账至以下任一账户:",
+    "afterTransfer": "转账后，请在下方上传付款截图。",
+    "cardNumber": "信用卡号",
+    "cardNote": "提交后将从您的 MPU 卡中扣款。",
+    "kbz": "KBZ 银行:",
+    "aya": "AYA 银行:"
+  },
+  "registrant": {
+    "fideId": "FIDE ID",
+    "fullName": "全名",
+    "age": "年龄",
+    "phoneWithCode": "电话号码 (含国家代码)",
+    "phone": "电话号码",
+    "nrc": "NRC / 护照号码",
+    "uploadScreenshot": "上传付款截图",
+    "reset": "重置",
+    "fideIdReq": "需要 FIDE ID",
+    "fullNameReq": "需要全名",
+    "invalidAge": "无效",
+    "phoneReq": "需要提供电话",
+    "nrcReq": "需要提供 NRC/护照"
+  },
+  "enroll": {
+    "nrcLabel": "NRC 或护照 ID",
+    "standardRating": "标准棋等级分",
+    "rapidRating": "快棋等级分",
+    "blitzRating": "超快棋等级分",
+    "bulletRating": "子弹棋等级分",
+    "uploadScreenshot": "付款截图 (上传)",
+    "submit": "登记意向",
+    "submitting": "提交中…",
+    "loginPrompt": "请登录以报名",
+    "submitted": "报名已提交！",
+    "loginToRegister": "请{{link}}以登记对该活动的意向。",
+    "logIn": "登录"
+  },
+  "chatbot": {
+    "greeting": "您好！我是 FIDE 培训师网络助手。请问有关于培训师头衔、研讨会、考试或商店物品的问题吗？",
+    "companion": "国际象棋助手",
+    "languages": "English • မြန်မာ • 中文",
+    "placeholder": "询问关于培训师、活动、考试的问题...",
+    "thinking": "思考中...",
+    "error": "抱歉，我无法连接到 AI 服务。请重试。",
+    "openLabel": "打开聊天机器人"
+  },
+  "advisor": {
+    "badge": "AI 职业顾问",
+    "heading": "您想获得什么头衔？",
+    "subhead": "输入您的研讨会考试成绩和 FIDE 等级分。我们的 AI 将为您推荐合适的培训师头衔，解释其适合度，并指导您的后续步骤。",
+    "yourProfile": "您的个人资料",
+    "examScore": "研讨会考试成绩 (0–1000)",
+    "fideRating": "FIDE 等级分",
+    "goal": "您的目标 (选填)",
+    "goalPlaceholder": "例如: 辅导青少年棋手并追求 FIDE 培训师认证。",
+    "titleReq": "头衔要求",
+    "req": {
+      "di": "DI · 考试 200–399 · 无等级分要求",
+      "ni": "NI · 考试 400–599 · 最低 1700",
+      "fi": "FI · 考试 600–799 · 最低 2000",
+      "ft": "FT · 考试 800–1000 · 最低 2300",
+      "fst": "FST · 凭功绩授予 · 2450+"
+    },
+    "errExam": "考试成绩必须在 0 到 1000 之间。",
+    "errRating": "FIDE 等级分必须在 0 到 3500 之间。",
+    "errGeneric": "出错了。请重试。",
+    "analyzing": "分析中…",
+    "getRec": "获取我的建议",
+    "aiRec": "AI 推荐",
+    "emptyHint": "填写您的详细信息，以查看个性化的头衔推荐。",
+    "consulting": "正在咨询 AI 职业顾问…",
+    "recommendedTitle": "推荐头衔",
+    "match": "匹配度",
+    "strengths": "优势",
+    "areasToImprove": "需改进之处",
+    "nextSteps": "下一步",
+    "suggestedSeminars": "推荐研讨会",
+    "suggestedTrainers": "推荐培训师",
+    "disclaimer": "免责声明:",
+    "disclaimerText": "这些 AI 建议仅供参考，不作为官方 FIDE 决定。最终头衔完全由 FIDE 根据其认证流程授予。"
+  }
+}

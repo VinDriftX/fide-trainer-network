@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { GraduationCap } from "lucide-react";
 import { RegistrantForm } from "@/components/registrant-form";
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/exams")({
 });
 
 function ExamsPage() {
+  const { t } = useTranslation();
   const [regNumber, setRegNumber] = useState<string | null>(null);
   const [name, setName] = useState("");
 
@@ -26,31 +28,29 @@ function ExamsPage() {
           <GraduationCap className="h-7 w-7" />
         </div>
         <div>
-          <h1 className="font-display text-4xl font-bold">Exam Registration</h1>
-          <p className="text-muted-foreground">Register for the FIDE Trainer Certification Exam.</p>
+          <h1 className="font-display text-4xl font-bold">{t("exams.title")}</h1>
+          <p className="text-muted-foreground">{t("exams.subtitle")}</p>
         </div>
       </div>
 
       <Card className="mb-6">
-        <CardContent className="p-6 text-sm text-muted-foreground">
-          The FIDE trainer certification exam evaluates your knowledge of chess theory, pedagogy, and tournament rules. Exams follow each seminar by one week. Complete the form below and upload your payment confirmation to secure your seat.
-        </CardContent>
+        <CardContent className="p-6 text-sm text-muted-foreground">{t("exams.info")}</CardContent>
       </Card>
 
       {regNumber ? (
         <SuccessCard
-          title="✅ Exam Registration Received"
+          title={t("exams.received")}
           rows={[
-            { label: "Registration No.", value: regNumber },
-            { label: "Candidate", value: name },
-            { label: "Status", value: "Pending payment verification" },
+            { label: t("exams.regNo"), value: regNumber },
+            { label: t("exams.candidate"), value: name },
+            { label: t("common.status"), value: t("exams.pendingPayment") },
           ]}
-          footer="You will receive an email with exam scheduling details within 3 business days."
+          footer={t("exams.footerNote")}
         />
       ) : (
         <Card><CardContent className="p-6">
           <RegistrantForm
-            submitLabel="Register"
+            submitLabel={t("exams.registerButton")}
             onSubmit={async (v) => {
               setName(v.fullName);
               setRegNumber(`EXAM-${Date.now().toString().slice(-8)}`);

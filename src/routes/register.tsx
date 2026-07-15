@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,16 +16,17 @@ export const Route = createFileRoute("/register")({
 });
 
 const schema = z.object({
-  fideId: z.string().trim().min(3, "FIDE ID required").max(20),
+  fideId: z.string().trim().min(3).max(20),
   fullName: z.string().trim().min(2).max(100),
   phone: z.string().trim().min(6).max(30),
   email: z.string().trim().email(),
-  password: z.string().min(6, "At least 6 characters"),
+  password: z.string().min(6),
   address: z.string().trim().min(2).max(200),
 });
 type Values = z.infer<typeof schema>;
 
 function RegisterPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const form = useForm<Values>({ resolver: zodResolver(schema) });
 
@@ -42,28 +44,25 @@ function RegisterPage() {
         },
       },
     });
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    toast.success("Welcome! Redirecting to your profile.");
+    if (error) { toast.error(error.message); return; }
+    toast.success(t("auth.welcome"));
     navigate({ to: "/profile" });
   };
 
   const fields: { name: keyof Values; label: string; type?: string }[] = [
-    { name: "fideId", label: "FIDE ID" },
-    { name: "fullName", label: "Full Name" },
-    { name: "phone", label: "Phone Number", type: "tel" },
-    { name: "email", label: "Email", type: "email" },
-    { name: "password", label: "Password", type: "password" },
-    { name: "address", label: "Address" },
+    { name: "fideId", label: t("taxSupport.fideId") },
+    { name: "fullName", label: t("auth.fullName") },
+    { name: "phone", label: t("auth.phoneReq"), type: "tel" },
+    { name: "email", label: t("auth.email"), type: "email" },
+    { name: "password", label: t("auth.password"), type: "password" },
+    { name: "address", label: t("auth.addressLabel") },
   ];
 
   return (
     <div className="mx-auto max-w-lg px-4 py-14 sm:px-6">
       <Card className="shadow-elegant">
         <CardHeader>
-          <CardTitle className="font-display text-3xl">Create Account</CardTitle>
+          <CardTitle className="font-display text-3xl">{t("auth.registerTitle")}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
@@ -72,15 +71,15 @@ function RegisterPage() {
                 <Label>{f.label}</Label>
                 <Input type={f.type ?? "text"} {...form.register(f.name)} />
                 {form.formState.errors[f.name] && (
-                  <p className="text-xs text-destructive">{String(form.formState.errors[f.name]?.message)}</p>
+                  <p className="text-xs text-destructive">{t("common.required")}</p>
                 )}
               </div>
             ))}
             <Button type="submit" variant="hero" className="mt-2" disabled={form.formState.isSubmitting}>
-              Register
+              {t("nav.signUp")}
             </Button>
             <p className="text-center text-sm text-muted-foreground">
-              Already have an account? <Link to="/auth" className="font-medium text-primary hover:underline">Login</Link>
+              {t("auth.haveAccount")} <Link to="/auth" className="font-medium text-primary hover:underline">{t("nav.login")}</Link>
             </p>
           </form>
         </CardContent>

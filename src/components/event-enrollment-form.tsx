@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,7 @@ import { PaymentMethodPicker, type PaymentMethod } from "@/components/payment-me
 import type { Event } from "@/lib/data";
 
 const schema = z.object({
-  nrc: z.string().trim().min(3, "NRC/Passport required").max(50),
+  nrc: z.string().trim().min(3).max(50),
   ratingStandard: z.coerce.number().int().min(0).max(3500).optional(),
   ratingRapid: z.coerce.number().int().min(0).max(3500).optional(),
   ratingBlitz: z.coerce.number().int().min(0).max(3500).optional(),
@@ -21,6 +22,7 @@ const schema = z.object({
 type Values = z.infer<typeof schema>;
 
 export function EventEnrollmentForm({ event, onSuccess }: { event: Event; onSuccess: () => void }) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [method, setMethod] = useState<PaymentMethod>("MMQR");
   const [paypalEmail, setPaypalEmail] = useState("");
@@ -32,7 +34,7 @@ export function EventEnrollmentForm({ event, onSuccess }: { event: Event; onSucc
   const form = useForm<Values>({ resolver: zodResolver(schema) });
 
   const onSubmit = async (v: Values) => {
-    if (!user) { toast.error("Please log in to enroll"); return; }
+    if (!user) { toast.error(t("enroll.loginPrompt")); return; }
     setSubmitting(true);
     let screenshotUrl: string | null = null;
     if (file) {
@@ -69,37 +71,37 @@ export function EventEnrollmentForm({ event, onSuccess }: { event: Event; onSucc
     }
     setSubmitting(false);
     if (error) { toast.error(error.message); return; }
-    toast.success("Enrollment submitted!");
+    toast.success(t("enroll.submitted"));
     onSuccess();
   };
 
   if (!user) {
-    return <p className="text-sm text-muted-foreground">Please <a href="/auth" className="text-primary underline">log in</a> to register interest in this event.</p>;
+    return <p className="text-sm text-muted-foreground">{t("enroll.loginToRegister", { link: t("enroll.logIn") })} <a href="/auth" className="text-primary underline">{t("enroll.logIn")}</a></p>;
   }
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
       <div className="grid gap-1.5">
-        <Label>NRC or Passport ID</Label>
+        <Label>{t("enroll.nrcLabel")}</Label>
         <Input {...form.register("nrc")} placeholder="e.g. 12/AAA(N)000000" />
-        {form.formState.errors.nrc && <p className="text-xs text-destructive">{form.formState.errors.nrc.message}</p>}
+        {form.formState.errors.nrc && <p className="text-xs text-destructive">{t("registrant.nrcReq")}</p>}
       </div>
 
       <div className="grid gap-4 rounded-lg border bg-muted/20 p-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="grid gap-1.5">
-          <Label>Standard Rating</Label>
+          <Label>{t("enroll.standardRating")}</Label>
           <Input type="number" {...form.register("ratingStandard")} placeholder="1850" />
         </div>
         <div className="grid gap-1.5">
-          <Label>Rapid Rating</Label>
+          <Label>{t("enroll.rapidRating")}</Label>
           <Input type="number" {...form.register("ratingRapid")} placeholder="1900" />
         </div>
         <div className="grid gap-1.5">
-          <Label>Blitz Rating</Label>
+          <Label>{t("enroll.blitzRating")}</Label>
           <Input type="number" {...form.register("ratingBlitz")} placeholder="1950" />
         </div>
         <div className="grid gap-1.5">
-          <Label>Bullet Rating</Label>
+          <Label>{t("enroll.bulletRating")}</Label>
           <Input type="number" {...form.register("ratingBullet")} placeholder="2000" />
         </div>
       </div>
@@ -112,12 +114,12 @@ export function EventEnrollmentForm({ event, onSuccess }: { event: Event; onSucc
       />
 
       <div className="grid gap-1.5">
-        <Label htmlFor="event-screenshot">Payment Screenshot (Upload)</Label>
+        <Label htmlFor="event-screenshot">{t("enroll.uploadScreenshot")}</Label>
         <Input id="event-screenshot" type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
       </div>
 
       <Button type="submit" variant="hero" disabled={submitting}>
-        {submitting ? "Submitting…" : "Register Interest"}
+        {submitting ? t("enroll.submitting") : t("enroll.submit")}
       </Button>
     </form>
   );

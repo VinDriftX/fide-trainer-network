@@ -1,3 +1,5 @@
+import type { TFunction } from "i18next";
+
 export type TrainerLevel = {
   code: string;
   name: string;
@@ -5,17 +7,21 @@ export type TrainerLevel = {
   description: string;
 };
 
-export const trainerLevels: TrainerLevel[] = [
-  { code: "DI", name: "Developmental Instructor", rating: "Up to 1200", description: "Supports beginner chess players." },
-  { code: "NI", name: "National Instructor", rating: "1201–1700", description: "National certified instructor." },
-  { code: "FI", name: "FIDE Instructor", rating: "1701–1900", description: "Official international instructor." },
-  { code: "FT", name: "FIDE Trainer", rating: "1901–2200", description: "Professional trainer certified by FIDE." },
-  { code: "FST", name: "FIDE Senior Trainer", rating: "2201–2450", description: "Highest FIDE trainer certification." },
-];
+const LEVEL_CODES = ["DI", "NI", "FI", "FT", "FST"] as const;
+
+export function getTrainerLevels(t: TFunction): TrainerLevel[] {
+  return LEVEL_CODES.map((code) => ({
+    code,
+    name: t(`levels.${code}.name`),
+    rating: t(`levels.${code}.rating`),
+    description: t(`levels.${code}.description`),
+  }));
+}
 
 export type Event = {
   id: string;
   country: string;
+  countryKey: string;
   flag: string;
   name: string;
   date: string;
@@ -29,17 +35,14 @@ export type Event = {
   passcode: string;
 };
 
-export const events: Event[] = [
+const EVENT_BASE = [
   {
     id: "mm-01",
-    country: "Myanmar",
+    countryKey: "Myanmar",
     flag: "🇲🇲",
-    name: "FIDE Trainer Seminar — Yangon",
     date: "15/08/2026",
     time: "09:00 MMT",
-    venue: "Sedona Hotel, Yangon",
     trainers: ["GM Wesley So", "IM Aung Aung", "FT Nay Oo"],
-    description: "A five-day intensive seminar covering middlegame strategy, endgame technique, and modern opening theory for aspiring FIDE trainers.",
     examDate: "22/08/2026",
     zoomLink: "https://zoom.us/j/98765432101",
     meetingId: "987 6543 2101",
@@ -47,14 +50,11 @@ export const events: Event[] = [
   },
   {
     id: "us-01",
-    country: "United States",
+    countryKey: "United States",
     flag: "🇺🇸",
-    name: "FIDE Trainer Seminar — New York",
     date: "10/09/2026",
     time: "10:00 MMT",
-    venue: "Marshall Chess Club, NYC",
     trainers: ["GM Fabiano Caruana", "IM Danny Rensch", "FT Sara Chen"],
-    description: "In-person seminar with world-class coaches on modern preparation, engine-assisted analysis, and pedagogical techniques.",
     examDate: "17/09/2026",
     zoomLink: "https://zoom.us/j/12345678909",
     meetingId: "123 4567 8909",
@@ -62,20 +62,28 @@ export const events: Event[] = [
   },
   {
     id: "in-01",
-    country: "India",
+    countryKey: "India",
     flag: "🇮🇳",
-    name: "FIDE Trainer Seminar — Chennai",
     date: "20/10/2026",
     time: "11:30 MMT",
-    venue: "Tal Chess Academy, Chennai",
     trainers: ["GM Viswanathan Anand", "GM Vidit Gujrathi", "FT Priya Rao"],
-    description: "Comprehensive trainer certification program with a focus on youth development and tournament preparation.",
     examDate: "27/10/2026",
     zoomLink: "https://zoom.us/j/55566677788",
     meetingId: "555 6667 7788",
     passcode: "FTNIN26",
   },
-];
+] as const;
+
+export function getEvents(t: TFunction): Event[] {
+  return EVENT_BASE.map((e) => ({
+    ...e,
+    trainers: [...e.trainers],
+    country: t(`events.countries.${e.countryKey}`, { defaultValue: e.countryKey }),
+    name: t(`events.list.${e.id}.name`),
+    venue: t(`events.list.${e.id}.venue`),
+    description: t(`events.list.${e.id}.description`),
+  }));
+}
 
 export type Trainer = {
   id: string;
@@ -91,83 +99,81 @@ export type Trainer = {
   color: string;
 };
 
-export const trainers: Trainer[] = [
-  {
-    id: "t1",
-    name: "GM Wesley Chen",
-    country: "United States",
-    title: "FIDE Senior Trainer",
-    rating: 2680,
-    bio: "Three-time national champion with 15 years of coaching experience. Author of Modern Endgame Practice.",
-    experience: "15+ years",
-    expertise: ["Endgame Theory", "Positional Play", "Opening Preparation"],
-    languages: ["English", "Mandarin"],
-    initials: "WC",
-    color: "from-emerald-500 to-teal-600",
-  },
-  {
-    id: "t2",
-    name: "IM Priya Sharma",
-    country: "India",
-    title: "FIDE Trainer",
-    rating: 2410,
-    bio: "Women's national team coach specializing in youth development and tactical training.",
-    experience: "10+ years",
-    expertise: ["Tactics", "Youth Coaching", "Middlegame"],
-    languages: ["English", "Hindi", "Tamil"],
-    initials: "PS",
-    color: "from-amber-500 to-orange-600",
-  },
-  {
-    id: "t3",
-    name: "FM Aung Kyaw",
-    country: "Myanmar",
-    title: "FIDE Instructor",
-    rating: 2280,
-    bio: "Southeast Asian championship medalist. Dedicated to growing chess across Myanmar.",
-    experience: "8+ years",
-    expertise: ["Fundamentals", "Openings", "Rapid & Blitz"],
-    languages: ["English", "Burmese"],
-    initials: "AK",
-    color: "from-indigo-500 to-purple-600",
-  },
-];
+const TRAINER_BASE = [
+  { id: "t1", rating: 2680, initials: "WC", color: "from-emerald-500 to-teal-600" },
+  { id: "t2", rating: 2410, initials: "PS", color: "from-amber-500 to-orange-600" },
+  { id: "t3", rating: 2280, initials: "AK", color: "from-indigo-500 to-purple-600" },
+] as const;
+
+export function getTrainers(t: TFunction): Trainer[] {
+  return TRAINER_BASE.map((tr) => ({
+    ...tr,
+    name: t(`trainers.list.${tr.id}.name`),
+    country: t(`trainers.list.${tr.id}.country`),
+    title: t(`trainers.list.${tr.id}.title`),
+    bio: t(`trainers.list.${tr.id}.bio`),
+    experience: t(`trainers.list.${tr.id}.experience`),
+    expertise: t(`trainers.list.${tr.id}.expertise`, { returnObjects: true }) as string[],
+    languages: t(`trainers.list.${tr.id}.languages`, { returnObjects: true }) as string[],
+  }));
+}
 
 export type Product = {
   id: string;
   name: string;
   category: string;
+  categoryKey: string;
   price: number;
   description: string;
   emoji: string;
 };
 
-export const productCategories = ["Chess Sets", "Chess Pieces", "Chess Boards", "Chess Accessories"] as const;
+export const PRODUCT_CATEGORY_KEYS = ["Chess Sets", "Chess Pieces", "Chess Boards", "Chess Accessories"] as const;
 
-export const products: Product[] = [
-  { id: "s1", category: "Chess Sets", name: "Wooden Set", price: 130, description: "Handcrafted rosewood tournament set.", emoji: "♛" },
-  { id: "s2", category: "Chess Sets", name: "Plastic Set", price: 44, description: "Durable weighted plastic set for clubs.", emoji: "♟" },
-  { id: "s3", category: "Chess Sets", name: "Digital Set", price: 1709, description: "Premium digital sensor board with app sync.", emoji: "♞" },
-  { id: "s4", category: "Chess Sets", name: "Vinyl Set", price: 15, description: "Portable roll-up vinyl set.", emoji: "♜" },
-  { id: "s5", category: "Chess Sets", name: "Leather Set", price: 55, description: "Elegant leather-bound set with pieces.", emoji: "♚" },
-  { id: "p1", category: "Chess Pieces", name: "Wooden Pieces", price: 460, description: "Staunton weighted rosewood pieces.", emoji: "♛" },
-  { id: "p2", category: "Chess Pieces", name: "Plastic Pieces", price: 42, description: "Tournament plastic pieces.", emoji: "♟" },
-  { id: "p3", category: "Chess Pieces", name: "Digital Pieces", price: 770, description: "Smart RFID pieces for electronic boards.", emoji: "♞" },
-  { id: "p4", category: "Chess Pieces", name: "Vinyl Pieces", price: 42, description: "Silicone tournament pieces.", emoji: "♜" },
-  { id: "p5", category: "Chess Pieces", name: "Leather Pieces", price: 42, description: "Soft leather-crafted pieces.", emoji: "♚" },
-  { id: "b1", category: "Chess Boards", name: "Wooden Board", price: 409, description: "Solid walnut & maple tournament board.", emoji: "▦" },
-  { id: "b2", category: "Chess Boards", name: "Plastic Board", price: 439, description: "Weighted plastic tournament board.", emoji: "▦" },
-  { id: "b3", category: "Chess Boards", name: "Digital Board", price: 800, description: "Smart sensor tournament board.", emoji: "▦" },
-  { id: "b4", category: "Chess Boards", name: "Vinyl Board", price: 5, description: "Portable vinyl roll-up board.", emoji: "▦" },
-  { id: "b5", category: "Chess Boards", name: "Leather Board", price: 25, description: "Premium leather board.", emoji: "▦" },
-  { id: "a1", category: "Chess Accessories", name: "Chess Storage Box", price: 130, description: "Premium wooden storage for pieces.", emoji: "📦" },
-  { id: "a2", category: "Chess Accessories", name: "Chess Bag", price: 554, description: "Deluxe travel bag for board & pieces.", emoji: "🎒" },
-  { id: "a3", category: "Chess Accessories", name: "Digital Chess Clock", price: 409, description: "FIDE-approved digital clock.", emoji: "⏱️" },
-];
+const PRODUCT_BASE = [
+  { id: "s1", categoryKey: "Chess Sets", price: 130, emoji: "♛" },
+  { id: "s2", categoryKey: "Chess Sets", price: 44, emoji: "♟" },
+  { id: "s3", categoryKey: "Chess Sets", price: 1709, emoji: "♞" },
+  { id: "s4", categoryKey: "Chess Sets", price: 15, emoji: "♜" },
+  { id: "s5", categoryKey: "Chess Sets", price: 55, emoji: "♚" },
+  { id: "p1", categoryKey: "Chess Pieces", price: 460, emoji: "♛" },
+  { id: "p2", categoryKey: "Chess Pieces", price: 42, emoji: "♟" },
+  { id: "p3", categoryKey: "Chess Pieces", price: 770, emoji: "♞" },
+  { id: "p4", categoryKey: "Chess Pieces", price: 42, emoji: "♜" },
+  { id: "p5", categoryKey: "Chess Pieces", price: 42, emoji: "♚" },
+  { id: "b1", categoryKey: "Chess Boards", price: 409, emoji: "▦" },
+  { id: "b2", categoryKey: "Chess Boards", price: 439, emoji: "▦" },
+  { id: "b3", categoryKey: "Chess Boards", price: 800, emoji: "▦" },
+  { id: "b4", categoryKey: "Chess Boards", price: 5, emoji: "▦" },
+  { id: "b5", categoryKey: "Chess Boards", price: 25, emoji: "▦" },
+  { id: "a1", categoryKey: "Chess Accessories", price: 130, emoji: "📦" },
+  { id: "a2", categoryKey: "Chess Accessories", price: 554, emoji: "🎒" },
+  { id: "a3", categoryKey: "Chess Accessories", price: 409, emoji: "⏱️" },
+] as const;
 
-export const stats = [
-  { label: "Trainers", value: 428 },
-  { label: "Registered Members", value: 12480 },
-  { label: "Events", value: 96 },
-  { label: "Countries", value: 42 },
-];
+export function getProducts(t: TFunction): Product[] {
+  return PRODUCT_BASE.map((p) => ({
+    ...p,
+    category: t(`shop.categories.${p.categoryKey}`),
+    name: t(`shop.products.${p.id}.name`),
+    description: t(`shop.products.${p.id}.description`),
+  }));
+}
+
+export function getProductCategories(t: TFunction) {
+  return PRODUCT_CATEGORY_KEYS.map((key) => ({
+    key,
+    label: t(`shop.categories.${key}`),
+  }));
+}
+
+export const STAT_KEYS = ["trainers", "members", "events", "countries"] as const;
+
+export function getStats(t: TFunction) {
+  return [
+    { key: "trainers", label: t("stats.trainers"), value: 428 },
+    { key: "members", label: t("stats.members"), value: 12480 },
+    { key: "events", label: t("stats.events"), value: 96 },
+    { key: "countries", label: t("stats.countries"), value: 42 },
+  ];
+}

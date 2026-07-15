@@ -5,6 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { QrCode } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const paymentMethods = ["MMQR", "PayPal", "Mobile Banking", "MPU"] as const;
 export type PaymentMethod = typeof paymentMethods[number];
@@ -25,12 +26,13 @@ export function PaymentMethodPicker({
   cardNumber: string;
   onCardNumberChange: (v: string) => void;
 }) {
+  const { t } = useTranslation();
   const [qrOpen, setQrOpen] = useState(false);
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=MMQR-FTN-PAYMENT-${KBZ_ACCOUNT}`;
 
   return (
     <div className="grid gap-3">
-      <Label>Payment Method</Label>
+      <Label>{t("payment.method")}</Label>
       <RadioGroup
         value={value}
         onValueChange={(v) => {
@@ -50,11 +52,11 @@ export function PaymentMethodPicker({
       {value === "MMQR" && (
         <div className="flex items-center justify-between rounded-lg border bg-muted/30 p-4">
           <div className="text-sm">
-            <div className="font-medium">MMQR Payment</div>
-            <div className="text-muted-foreground">Scan the QR code with your MMQR-enabled banking app.</div>
+            <div className="font-medium">{t("payment.mmqrTitle")}</div>
+            <div className="text-muted-foreground">{t("payment.mmqrDesc")}</div>
           </div>
           <Button type="button" variant="outline" size="sm" onClick={() => setQrOpen(true)}>
-            <QrCode className="mr-1 h-4 w-4" />View QR
+            <QrCode className="mr-1 h-4 w-4" />{t("payment.viewQR")}
           </Button>
         </div>
       )}
@@ -62,11 +64,11 @@ export function PaymentMethodPicker({
       {value === "PayPal" && (
         <div className="grid gap-4 rounded-lg border bg-muted/30 p-4 sm:grid-cols-2">
           <div className="grid gap-1.5">
-            <Label>PayPal Email</Label>
+            <Label>{t("payment.paypalEmail")}</Label>
             <Input type="email" value={paypalEmail} onChange={(e) => onPaypalEmailChange(e.target.value)} placeholder="you@example.com" />
           </div>
           <div className="grid gap-1.5">
-            <Label>Transaction ID</Label>
+            <Label>{t("payment.transactionId")}</Label>
             <Input value={transactionId} onChange={(e) => onTransactionIdChange(e.target.value)} placeholder="TXN..." />
           </div>
         </div>
@@ -74,18 +76,18 @@ export function PaymentMethodPicker({
 
       {value === "Mobile Banking" && (
         <div className="grid gap-2 rounded-lg border bg-muted/30 p-4 text-sm">
-          <div className="font-medium">Transfer to one of these accounts:</div>
+          <div className="font-medium">{t("payment.transferTo")}</div>
           <div className="grid gap-1 font-mono text-base tracking-wider">
-            <div><span className="text-muted-foreground text-xs font-sans mr-2">KBZ Bank:</span>{KBZ_ACCOUNT}</div>
-            <div><span className="text-muted-foreground text-xs font-sans mr-2">AYA Bank:</span>{AYA_ACCOUNT}</div>
+            <div><span className="text-muted-foreground text-xs font-sans mr-2">{t("payment.kbz")}</span>{KBZ_ACCOUNT}</div>
+            <div><span className="text-muted-foreground text-xs font-sans mr-2">{t("payment.aya")}</span>{AYA_ACCOUNT}</div>
           </div>
-          <div className="text-xs text-muted-foreground">After transfer, upload the payment screenshot below.</div>
+          <div className="text-xs text-muted-foreground">{t("payment.afterTransfer")}</div>
         </div>
       )}
 
       {value === "MPU" && (
         <div className="grid gap-1.5 rounded-lg border bg-muted/30 p-4">
-          <Label>Credit Card Number</Label>
+          <Label>{t("payment.cardNumber")}</Label>
           <Input
             inputMode="numeric"
             maxLength={19}
@@ -93,15 +95,15 @@ export function PaymentMethodPicker({
             onChange={(e) => onCardNumberChange(e.target.value.replace(/[^\d ]/g, ""))}
             placeholder="•••• •••• •••• ••••"
           />
-          <p className="text-xs text-muted-foreground">Your MPU card will be charged after submission.</p>
+          <p className="text-xs text-muted-foreground">{t("payment.cardNote")}</p>
         </div>
       )}
 
       <Dialog open={qrOpen} onOpenChange={setQrOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>Scan MMQR to Pay</DialogTitle>
-            <DialogDescription>Open your bank app and scan this QR code to complete payment.</DialogDescription>
+            <DialogTitle>{t("payment.scanTitle")}</DialogTitle>
+            <DialogDescription>{t("payment.scanDesc")}</DialogDescription>
           </DialogHeader>
           <div className="flex justify-center p-4">
             <img src={qrUrl} alt="MMQR payment QR code" width={280} height={280} className="rounded-lg border bg-white p-2" />
