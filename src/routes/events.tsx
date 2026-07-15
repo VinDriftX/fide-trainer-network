@@ -1,13 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Calendar, MapPin, Clock, Users } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, Plus } from "lucide-react";
 import { getEvents, type Event } from "@/lib/data";
 import { EventEnrollmentForm } from "@/components/event-enrollment-form";
 import { SuccessCard } from "@/components/success-card";
+import { useAuth } from "@/lib/auth-context";
 import mascot from "@/assets/chess-mascot.png";
 
 export const Route = createFileRoute("/events")({
