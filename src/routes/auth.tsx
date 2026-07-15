@@ -72,6 +72,9 @@ function AuthPage() {
           <p className="mt-6 text-center text-sm text-muted-foreground">
             {t("auth.newHere")} <Link to="/register" className="font-medium text-primary hover:underline">{t("auth.createAccount")}</Link>
           </p>
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Administrator? <Link to="/admin/login" className="font-medium text-primary hover:underline">Admin login →</Link>
+          </p>
         </CardContent>
       </Card>
     </div>

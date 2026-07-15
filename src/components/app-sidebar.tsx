@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, Calendar, GraduationCap, Receipt, Users, ShoppingBag, Settings, Crown } from "lucide-react";
+import { Home, Calendar, GraduationCap, Receipt, Users, ShoppingBag, Settings, Crown, Shield } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/lib/auth-context";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader,
@@ -8,6 +9,7 @@ import {
 
 export function AppSidebar() {
   const { t } = useTranslation();
+  const { isAdmin } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const items = [
     { title: t("nav.home"), url: "/", icon: Home },
@@ -46,6 +48,16 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              {isAdmin && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild isActive={pathname.startsWith("/admin")} tooltip="Admin Portal">
+                    <Link to="/admin">
+                      <Shield />
+                      <span>Admin Portal</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

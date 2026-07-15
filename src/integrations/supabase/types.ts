@@ -231,6 +231,60 @@ export type Database = {
         }
         Relationships: []
       }
+      official_partners: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          country: string | null
+          created_at: string
+          display_order: number
+          expertise: string[] | null
+          id: string
+          is_active: boolean
+          languages: string[] | null
+          name: string
+          rating: number | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          country?: string | null
+          created_at?: string
+          display_order?: number
+          expertise?: string[] | null
+          id?: string
+          is_active?: boolean
+          languages?: string[] | null
+          name: string
+          rating?: number | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          country?: string | null
+          created_at?: string
+          display_order?: number
+          expertise?: string[] | null
+          id?: string
+          is_active?: boolean
+          languages?: string[] | null
+          name?: string
+          rating?: number | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           buyer_id: string
