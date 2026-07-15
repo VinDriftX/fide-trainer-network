@@ -7,6 +7,7 @@ const InputSchema = z.object({
   examScore: z.number().min(0).max(1000),
   fideRating: z.number().min(0).max(3500),
   goal: z.string().max(500).optional(),
+  language: z.enum(["en", "my", "zh"]).optional(),
 });
 
 const AdviceSchema = z.object({
@@ -22,7 +23,15 @@ const AdviceSchema = z.object({
 
 export type CareerAdvice = z.infer<typeof AdviceSchema>;
 
-const SYSTEM = `You are an AI Career Advisor for the FIDE Trainer Network. Recommend a trainer title using BOTH the seminar Exam Score and FIDE Rating.
+const LANG_NAMES: Record<string, string> = {
+  en: "English",
+  my: "Burmese (မြန်မာ)",
+  zh: "Simplified Chinese (中文)",
+};
+
+function buildSystem(uiLang: string) {
+  const uiName = LANG_NAMES[uiLang] ?? "English";
+  return `You are an AI Career Advisor for the FIDE Trainer Network. Recommend a trainer title using BOTH the seminar Exam Score and FIDE Rating.
 
 Title thresholds:
 - DI: Exam 200-399, no rating requirement
@@ -35,7 +44,13 @@ Rules:
 - The user must meet BOTH the exam range AND the minimum rating for a title. If exam qualifies but rating is below, recommend the highest qualifying tier and explain the gap.
 - matchScore is 0-100 reflecting how well the user fits the recommended title.
 - Reference upcoming seminars (Yangon, New York, Chennai) and typical trainer profiles (GM/IM/FT coaches).
-- Be encouraging, concise, and specific. Use plain language.`;
+
+Language policy (STRICT):
+- The user's interface language is: ${uiName}.
+- Auto-detect the language of the user's "goal" text. If it is in Burmese, write ALL string fields in Burmese. If in Simplified/Traditional Chinese, write in Simplified Chinese. If in English, write in English.
+- If the goal is empty or ambiguous, use the interface language (${uiName}).
+- Keep FIDE title codes (DI/NI/FI/FT/FST) as-is. Do not translate proper nouns like "FIDE", city names, or GM/IM/FT prefixes.`;
+}
 
 export const getCareerAdvice = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => InputSchema.parse(input))
@@ -53,7 +68,7 @@ Return JSON with fields: recommendedTitle, matchScore (0-100), explanation, stre
     try {
       const { output } = await generateText({
         model: gateway("google/gemini-3-flash-preview"),
-        system: SYSTEM,
+        system: buildSystem(data.language ?? "en"),
         prompt,
         output: Output.object({ schema: AdviceSchema }),
       });

@@ -1,18 +1,23 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import mascot from "@/assets/chess-mascot.png";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
 export function Chatbot() {
+  const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Msg[]>([
-    { role: "assistant", content: "Hi! I'm the FIDE Trainer Network assistant. Ask me about trainer titles, seminars, exams, or shop items. မင်္ဂလာပါ!" },
-  ]);
+  const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Re-seed greeting on language change
+  useEffect(() => {
+    setMessages([{ role: "assistant", content: t("chatbot.greeting") }]);
+  }, [i18n.language, t]);
 
   useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" }); }, [messages, loading]);
 
@@ -28,6 +33,7 @@ export function Chatbot() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          language: i18n.language,
           messages: next.map((m, i) => ({
             id: `m${i}`,
             role: m.role,
@@ -44,7 +50,6 @@ export function Chatbot() {
         const { value, done } = await reader.read();
         if (done) break;
         const chunk = decoder.decode(value);
-        // parse SSE-like data lines
         for (const line of chunk.split("\n")) {
           if (!line.startsWith("data: ")) continue;
           const data = line.slice(6).trim();
@@ -58,8 +63,8 @@ export function Chatbot() {
           } catch {}
         }
       }
-    } catch (err) {
-      setMessages((m) => [...m, { role: "assistant", content: "Sorry, I couldn't reach the AI service. Please try again." }]);
+    } catch {
+      setMessages((m) => [...m, { role: "assistant", content: t("chatbot.error") }]);
     } finally {
       setLoading(false);
     }
@@ -70,7 +75,7 @@ export function Chatbot() {
       <button
         onClick={() => setOpen((v) => !v)}
         className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-elegant transition hover:scale-110"
-        aria-label="Open chatbot"
+        aria-label={t("chatbot.openLabel")}
       >
         {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
       </button>
@@ -79,8 +84,8 @@ export function Chatbot() {
           <div className="flex items-center gap-3 border-b bg-primary p-3 text-primary-foreground">
             <img src={mascot} alt="" className="h-10 w-10 shrink-0" width={40} height={40} />
             <div className="min-w-0">
-              <div className="truncate font-display font-bold">Chess Companion</div>
-              <div className="truncate text-xs opacity-80">English • မြန်မာ</div>
+              <div className="truncate font-display font-bold">{t("chatbot.companion")}</div>
+              <div className="truncate text-xs opacity-80">{t("chatbot.languages")}</div>
             </div>
           </div>
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
@@ -90,7 +95,7 @@ export function Chatbot() {
               </div>
             ))}
             {loading && messages[messages.length - 1]?.role === "user" && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground"><Loader2 className="h-3 w-3 animate-spin" />Thinking...</div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground"><Loader2 className="h-3 w-3 animate-spin" />{t("chatbot.thinking")}</div>
             )}
           </div>
           <div className="flex items-end gap-2 border-t p-3">
@@ -98,7 +103,7 @@ export function Chatbot() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
-              placeholder="Ask about trainers, events, exams..."
+              placeholder={t("chatbot.placeholder")}
               rows={1}
               className="flex-1 resize-none rounded-lg border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
             />
