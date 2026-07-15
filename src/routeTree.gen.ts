@@ -24,6 +24,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AdminTaxSupportRouteImport } from './routes/admin.tax-support'
+import { Route as AdminShopRouteImport } from './routes/admin.shop'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminPartnersRouteImport } from './routes/admin.partners'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -104,6 +105,11 @@ const AdminTaxSupportRoute = AdminTaxSupportRouteImport.update({
   path: '/admin/tax-support',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminShopRoute = AdminShopRouteImport.update({
+  id: '/admin/shop',
+  path: '/admin/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/admin/settings',
   path: '/admin/settings',
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/partners': typeof AdminPartnersRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/shop': typeof AdminShopRoute
   '/admin/tax-support': typeof AdminTaxSupportRoute
   '/api/chat': typeof ApiChatRoute
   '/admin/': typeof AdminIndexRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/partners': typeof AdminPartnersRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/shop': typeof AdminShopRoute
   '/admin/tax-support': typeof AdminTaxSupportRoute
   '/api/chat': typeof ApiChatRoute
   '/admin': typeof AdminIndexRoute
@@ -185,6 +193,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/partners': typeof AdminPartnersRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/shop': typeof AdminShopRoute
   '/admin/tax-support': typeof AdminTaxSupportRoute
   '/api/chat': typeof ApiChatRoute
   '/admin/': typeof AdminIndexRoute
@@ -208,6 +217,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/partners'
     | '/admin/settings'
+    | '/admin/shop'
     | '/admin/tax-support'
     | '/api/chat'
     | '/admin/'
@@ -229,6 +239,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/partners'
     | '/admin/settings'
+    | '/admin/shop'
     | '/admin/tax-support'
     | '/api/chat'
     | '/admin'
@@ -250,6 +261,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/partners'
     | '/admin/settings'
+    | '/admin/shop'
     | '/admin/tax-support'
     | '/api/chat'
     | '/admin/'
@@ -272,6 +284,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminPartnersRoute: typeof AdminPartnersRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminShopRoute: typeof AdminShopRoute
   AdminTaxSupportRoute: typeof AdminTaxSupportRoute
   ApiChatRoute: typeof ApiChatRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -384,6 +397,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTaxSupportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/shop': {
+      id: '/admin/shop'
+      path: '/admin/shop'
+      fullPath: '/admin/shop'
+      preLoaderRoute: typeof AdminShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/admin/settings'
@@ -432,6 +452,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminPartnersRoute: AdminPartnersRoute,
   AdminSettingsRoute: AdminSettingsRoute,
+  AdminShopRoute: AdminShopRoute,
   AdminTaxSupportRoute: AdminTaxSupportRoute,
   ApiChatRoute: ApiChatRoute,
   AdminIndexRoute: AdminIndexRoute,
