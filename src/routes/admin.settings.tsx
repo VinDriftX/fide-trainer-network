@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { adminListUsers, adminSetUserRole, adminBanUser, adminDeleteUser } from "@/lib/admin.functions";
-import { Shield, ShieldOff, Ban, Trash2 } from "lucide-react";
+import { Shield, ShieldOff, Ban, Trash2, Search } from "lucide-react";
 
 export const Route = createFileRoute("/admin/settings")({
   head: () => ({ meta: [{ title: "Admin Settings — FIDE Trainer Network" }, { name: "robots", content: "noindex" }] }),
@@ -19,6 +19,7 @@ export const Route = createFileRoute("/admin/settings")({
 function SettingsAdmin() {
   const qc = useQueryClient();
   const [q, setQ] = useState("");
+  const [query, setQuery] = useState("");
   const list = useServerFn(adminListUsers);
   const setRole = useServerFn(adminSetUserRole);
   const ban = useServerFn(adminBanUser);
@@ -42,19 +43,34 @@ function SettingsAdmin() {
     onError: (e: any) => toast.error(e.message),
   });
 
+  const needle = query.trim().toLowerCase();
   const filtered = (data as any[]).filter((u) =>
-    !q || (u.email?.toLowerCase().includes(q.toLowerCase()) || u.profile?.full_name?.toLowerCase().includes(q.toLowerCase())),
+    !needle || (u.email?.toLowerCase().includes(needle) || u.profile?.full_name?.toLowerCase().includes(needle)),
   );
+
+  const runSearch = () => setQuery(q);
 
   return (
     <div>
       <h1 className="mb-2 font-display text-3xl font-bold">Users & Access</h1>
       <p className="mb-6 text-sm text-muted-foreground">Manage administrators, ban suspicious accounts, and view sign-in activity.</p>
 
-      <div className="mb-4 flex items-center gap-3">
-        <Input placeholder="Search by name or email…" value={q} onChange={(e) => setQ(e.target.value)} className="max-w-sm" />
+      <form
+        className="mb-4 flex items-center gap-2"
+        onSubmit={(e) => { e.preventDefault(); runSearch(); }}
+      >
+        <Input
+          placeholder="Search by name or email…"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          className="max-w-sm"
+        />
+        <Button type="submit" size="sm"><Search className="mr-1 h-4 w-4" />Search</Button>
+        {query && (
+          <Button type="button" size="sm" variant="ghost" onClick={() => { setQ(""); setQuery(""); }}>Clear</Button>
+        )}
         <span className="text-sm text-muted-foreground">{filtered.length} users</span>
-      </div>
+      </form>
 
       {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
       <div className="grid gap-2">
